@@ -71,8 +71,8 @@ class UserModel extends Model
 		if ($dataUser['inputPassword']) {
 			$password = password_hash($dataUser['inputPassword'], PASSWORD_DEFAULT);
 		} else {
-			$user 		= $this->getUser(userID: $dataUser['userID']);
-			$password 	= $user['password'];
+			// $user 		= $this->getUser(userID: $dataUser['userID']);
+			// $password 	= $user['password'];
 		}
 		return $this->db->table('users')->update([
 			'fullname'		=> $dataUser['inputFullname'],
