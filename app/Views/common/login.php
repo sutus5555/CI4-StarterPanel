@@ -27,7 +27,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center mt-4">
-                                    <h1 class="h2">Welcome to CodeIgniter 4 Starter Panel</h1>
+                                    <h1 class="h2">Welcome to Budget Management system</h1>
                                     <p class="lead">
                                         Sign in to your account to continue
                                     </p>

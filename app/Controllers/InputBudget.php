@@ -1,21 +1,21 @@
 <?php
 		namespace App\Controllers;
 		use App\Controllers\BaseController;
-		class Input_budget extends BaseController
+		class InputBudget extends BaseController
 		{
 			public function index()
 			{
 				$data = array_merge($this->data, [
-					'title'         => 'Input Budget'
+					'title'         => 'Input_budget'
 				]);
-				return view('input_budgetList', $data);
+				return view('inputbudgetList', $data);
 			}
 			public function form()
 			{
 				$data = array_merge($this->data, [
-					'title'         => 'Input Budget'
+					'title'         => 'Input_budget'
 				]);
-				return view('input_budgetForm', $data);
+				return view('inputbudgetForm', $data);
 			}
 		}
 		
