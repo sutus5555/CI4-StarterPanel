@@ -6,6 +6,7 @@ use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
+use CodeIgniter\Validation\UniqueWithDeleted;
 
 class Validation
 {
@@ -36,6 +37,11 @@ class Validation
 		'list'   => 'CodeIgniter\Validation\Views\list',
 		'single' => 'CodeIgniter\Validation\Views\single',
 	];
+
+	public $rules = [
+        // Other validation rules
+        'unique_with_deleted' => \App\Rules\UniqueWithDeleted::class, // Use the custom rule class directly
+    ];
 
 	//--------------------------------------------------------------------
 	// Rules

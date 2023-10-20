@@ -8,6 +8,10 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\UserModel;
 use App\Models\MenuModel;
+use App\Models\BudgetGroupModel;
+use App\Models\BudgetTypeModel;
+use App\Models\DevisionModel;
+use App\Models\InputBudgetModel;
 
 
 /**
@@ -48,6 +52,10 @@ class BaseController extends Controller
 	protected $validation;
 	protected $encrypter;
 	protected $menuModel;
+	protected $BudgetGroupModel;
+	protected $BudgetTypeModel;
+	protected $DevisionModel;
+	protected $InputBudgetModel;
 	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
 	{
 		// Do Not Edit This Line
@@ -61,7 +69,11 @@ class BaseController extends Controller
 		$this->validation 	= \Config\Services::validation();
 		$this->encrypter 	= \Config\Services::encrypter();
 		$this->userModel  	= new UserModel();
-		$this->menuModel  	= new MenuModel();
+		$this->BudgetGroupModel  	= new BudgetGroupModel();
+		$this->BudgetTypeModel  	= new BudgetTypeModel();
+		$this->DevisionModel  	    = new DevisionModel();
+		$this->InputBudgetModel  	= new InputBudgetModel();
+
 		$user 				= $this->userModel->getUser(username: session()->get('username'));
 		$segment 			= $this->request->uri->getSegment(1);
 		if ($segment) {

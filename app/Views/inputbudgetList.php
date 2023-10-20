@@ -9,8 +9,12 @@
         <form action="<?= base_url('xxxx'); ?>" method="post">
             <div class="row ">
                 <div class="form-group col-md-2">
-                    <label for="inputName">ฺBudgetType</label>
-                    <select class="form-select" name="ฺBudgetType" id="ฺBudgetType" required>
+                    <label for="name">Budget Name</label>
+                    <input type="text" class="form-control" name="name" id="name" title="Enter the budget name it will show on report as name" required >
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="type">ฺBudgetType</label>
+                    <select class="form-select" name="type" id="type" title="Enter the budget name it will show on report as name" required>
                         <option value="">-- Select Type --</option>
                         <option value="1" selected>Normal</option>
                         <option value="2">CE</option>
@@ -22,8 +26,8 @@
                     <label for="inputName">ฺBudgetGroup</label>
                     <select class="form-select" name="ฺBudgetType" id="ฺBudgetType" required>
                         <option value="">-- Select Group --</option>
-                        <option value="1">Office  Equipment</option>
-                        <option value="2">W'house  Equipment </option>
+                        <option value="1">Office Equipment</option>
+                        <option value="2">W'house Equipment </option>
                         <option value="3">Re-packaging Dept.</option>
                         <option value="4">Hardware & Software</option>
                         <option value="4">Motor Vehicle</option>

@@ -72,6 +72,10 @@ hr {
 hr:not([size]) {
   height: 1px;
 }
+.specsgroup-color-1 { background-color: #d0e2ff; }
+.specsgroup-color-2 { background-color: #fff4e0; }
+.specsgroup-color-3 { background-color: #e6fcf5; }
+
 .h1,
 .h2,
 .h3,
