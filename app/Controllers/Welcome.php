@@ -27,6 +27,7 @@ class Welcome extends BaseController
 				if ($verify) {
 					session()->set([
 						'username'		=> $user['username'],
+						'userID'		=> $user['id'],
 						'role'			=> $user['role'],
 						'isLoggedIn' 	=> TRUE
 					]);

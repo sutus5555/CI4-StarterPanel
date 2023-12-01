@@ -69,6 +69,7 @@ class BaseController extends Controller
 		$this->validation 	= \Config\Services::validation();
 		$this->encrypter 	= \Config\Services::encrypter();
 		$this->userModel  	= new UserModel();
+		$this->menuModel  	= new MenuModel();
 		$this->BudgetGroupModel  	= new BudgetGroupModel();
 		$this->BudgetTypeModel  	= new BudgetTypeModel();
 		$this->DevisionModel  	    = new DevisionModel();

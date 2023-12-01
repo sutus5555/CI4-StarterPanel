@@ -59,7 +59,7 @@
         }
 
         // Initialize DataTables
-        var categoryTable = initializeDataTable('#groupTable');
+        var groupTable = initializeDataTable('#groupTable');
         var subCategoryTable = initializeDataTable('#SubCategoryTable');
         var subCategoryTable = initializeDataTable('#QClogdata');
 

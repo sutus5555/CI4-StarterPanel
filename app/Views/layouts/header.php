@@ -86,7 +86,7 @@
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
                                 <div class="col-2">
-                                    <img src="<?= base_url('assets/img/avatars/avatar-5.jpg') ?>" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
+                                    <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" class="avatar img-fluid rounded-circle" alt="Vanessa Tucker">
                                 </div>
                                 <div class="col-10 ps-2">
                                     <div class="text-dark">Vanessa Tucker</div>
@@ -98,7 +98,7 @@
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
                                 <div class="col-2">
-                                    <img src="<?= base_url('assets/img/avatars/avatar-2.jpg') ?>" class="avatar img-fluid rounded-circle" alt="William Harris">
+                                    <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" class="avatar img-fluid rounded-circle" alt="William Harris">
                                 </div>
                                 <div class="col-10 ps-2">
                                     <div class="text-dark">William Harris</div>
@@ -110,7 +110,7 @@
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
                                 <div class="col-2">
-                                    <img src="<?= base_url('assets/img/avatars/avatar-4.jpg') ?>" class="avatar img-fluid rounded-circle" alt="Christina Mason">
+                                    <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" class="avatar img-fluid rounded-circle" alt="Christina Mason">
                                 </div>
                                 <div class="col-10 ps-2">
                                     <div class="text-dark">Christina Mason</div>
@@ -122,7 +122,7 @@
                         <a href="#" class="list-group-item">
                             <div class="row g-0 align-items-center">
                                 <div class="col-2">
-                                    <img src="<?= base_url('assets/img/avatars/avatar-3.jpg') ?>" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
+                                    <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
                                 </div>
                                 <div class="col-10 ps-2">
                                     <div class="text-dark">Sharon Lessman</div>
@@ -143,7 +143,7 @@
                 </a>
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                    <img src="<?= base_url('assets/img/avatars/avatar-2.jpg') ?>" class="avatar img-fluid rounded me-1" alt="<?= $user['fullname']; ?>" /> <span class="text-dark"><?= $user['fullname']; ?></span>
+                    <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" class="avatar img-fluid rounded me-1" alt="<?= $user['fullname']; ?>" /> <span class="text-dark"><?= $user['fullname']; ?></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>

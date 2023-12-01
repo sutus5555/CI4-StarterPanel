@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <img src="<?= base_url('assets/img/avatars/avatar.jpg') ?>" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
+                                        <img src="<?= base_url('assets/img/avatars/avatar3.png') ?>" alt="Charles Hall" class="img-fluid rounded-circle" width="132" height="132" />
                                     </div>
                                     <form action="<?= base_url('GetLogin'); ?>" method="POST">
                                         <div class="mb-3">

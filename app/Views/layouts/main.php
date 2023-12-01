@@ -9,7 +9,7 @@
 
 	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
-	<title>Qc-Report</title>
+	<title>Budget System</title>
 
 
 

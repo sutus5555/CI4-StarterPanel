@@ -102,8 +102,8 @@ class Rules
             ->limit(1);
 
         if (
-            ! empty($whereField) && ! empty($whereValue)
-            && ! preg_match('/^\{(\w+)\}$/', $whereValue)
+            !empty($whereField) && !empty($whereValue)
+            && !preg_match('/^\{(\w+)\}$/', $whereValue)
         ) {
             $row = $row->where($whereField, $whereValue);
         }
@@ -147,13 +147,34 @@ class Rules
             ->limit(1);
 
         if (
-            ! empty($ignoreField) && ! empty($ignoreValue)
-            && ! preg_match('/^\{(\w+)\}$/', $ignoreValue)
+            !empty($ignoreField) && !empty($ignoreValue)
+            && !preg_match('/^\{(\w+)\}$/', $ignoreValue)
         ) {
             $row = $row->where("{$ignoreField} !=", $ignoreValue);
         }
 
         return $row->get()->getRow() === null;
+    }
+
+    public function is_unique_ignore_delete(string $str, string $field, array $data): bool
+    {
+        [$field, $currentId] = array_pad(explode(',', $field), 2, null);
+
+        sscanf($field, '%[^.].%[^.]', $table, $field);
+
+        $db = Database::connect($data['DBGroup'] ?? null);
+
+        $row = $db->table($table)
+            ->select('1')
+            ->where($field, $str)
+            ->where("$field IS NOT NULL")
+            ->where('delete_at IS NULL');
+
+        if ($currentId !== null) {
+            $row->where('id !=', $currentId);
+        }
+
+        return (bool) ($row->get()->getRow() === null);
     }
 
     /**
@@ -219,7 +240,7 @@ class Rules
      */
     public function not_in_list(?string $value, string $list): bool
     {
-        return ! $this->in_list($value, $list);
+        return !$this->in_list($value, $list);
     }
 
     /**
@@ -276,8 +297,8 @@ class Rules
 
         foreach (explode(',', $fields) as $field) {
             if (
-                (array_key_exists($field, $data) && ! empty($data[$field]))
-                || (strpos($field, '.') !== false && ! empty(dot_array_search($field, $data)))
+                (array_key_exists($field, $data) && !empty($data[$field]))
+                || (strpos($field, '.') !== false && !empty(dot_array_search($field, $data)))
             ) {
                 $requiredFields[] = $field;
             }
@@ -323,7 +344,7 @@ class Rules
         foreach (explode(',', $otherFields) as $otherField) {
             if (
                 (strpos($otherField, '.') === false)
-                && (! array_key_exists($otherField, $data) || empty($data[$otherField]))
+                && (!array_key_exists($otherField, $data) || empty($data[$otherField]))
             ) {
                 return false;
             }
@@ -338,7 +359,7 @@ class Rules
                 $fieldKey        = $fieldSplitArray[1];
 
                 if (is_array($fieldData)) {
-                    return ! empty(dot_array_search($otherField, $data)[$fieldKey]);
+                    return !empty(dot_array_search($otherField, $data)[$fieldKey]);
                 }
                 $nowField      = str_replace('*', $fieldKey, $otherField);
                 $nowFieldVaule = dot_array_search($nowField, $data);

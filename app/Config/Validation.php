@@ -2,13 +2,14 @@
 
 namespace Config;
 
+use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
-use CodeIgniter\Validation\UniqueWithDeleted;
+// use CodeIgniter\Validation\UniqueWithDeleted;
 
-class Validation
+class Validation extends BaseConfig
 {
 	//--------------------------------------------------------------------
 	// Setup
@@ -38,10 +39,6 @@ class Validation
 		'single' => 'CodeIgniter\Validation\Views\single',
 	];
 
-	public $rules = [
-        // Other validation rules
-        'unique_with_deleted' => \App\Rules\UniqueWithDeleted::class, // Use the custom rule class directly
-    ];
 
 	//--------------------------------------------------------------------
 	// Rules

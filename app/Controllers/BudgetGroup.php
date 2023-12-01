@@ -18,7 +18,7 @@ class BudgetGroup extends BaseController
 
 	public function creategroup()
 	{
-		if (!$this->validate(['name' => ['rules' => 'is_unique[budget_group.name]']])) {
+		if (!$this->validate(['name' => ['rules' => 'is_unique_ignore_delete[budget_group.name]']])) {
 			session()->setFlashdata('input_data', $this->request->getPost()); //เก็บข้อมูลเดิมไว้ใน session
 			session()->setFlashdata('notif_error', '<b>Failed to add new Group</b> The Group name already exists! ');
 			return redirect()->to(base_url('BudgetGroup'));
@@ -53,7 +53,7 @@ class BudgetGroup extends BaseController
 
 		// Define validation rules
 		$validationRules = [
-			'editName' => "required|is_unique[budget_group.name,{$editName}]",
+			'editName' => "required|is_unique_ignore_delete[budget_group.name,id,{$groupID}]",
 			// Define other validation rules for the remaining fields
 		];
 
