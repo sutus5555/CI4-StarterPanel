@@ -40,35 +40,35 @@ class Users extends BaseController
 		$createRole = $this->userModel->createRole($this->request->getPost(null, FILTER_UNSAFE_RAW));
 		if ($createRole) {
 			session()->setFlashdata('notif_success', '<b>Successfully added role data</b> ');
-			return redirect()->to(base_url('users'));
+			return redirect()->to(base_url('Roles'));
 		} else {
 			session()->setFlashdata('notif_error', '<b>Failed to add role data</b> ');
-			return redirect()->to(base_url('users'));
+			return redirect()->to(base_url('Roles'));
 		}
 	}
 	public function updateRole()
 	{
 		$updateRole = $this->userModel->updateRole($this->request->getPost(null, FILTER_UNSAFE_RAW));
 		if ($updateRole) {
-			session()->setFlashdata('notif_success', '<b>Successfully update user data</b> ');
-			return redirect()->to(base_url('users'));
+			session()->setFlashdata('notif_success', '<b>Successfully update Role data</b> ');
+			return redirect()->to(base_url('Roles'));
 		} else {
-			session()->setFlashdata('notif_error', '<b>Failed to update user data</b> ');
-			return redirect()->to(base_url('users'));
+			session()->setFlashdata('notif_error', '<b>Failed to update Role data</b> ');
+			return redirect()->to(base_url('Roles'));
 		}
 	}
 	public function deleteRole($role)
 	{
 		if (!$role) {
-			return redirect()->to(base_url('users'));
+			return redirect()->to(base_url('Roles'));
 		}
 		$deleteRole = $this->userModel->deleteRole($role);
 		if ($deleteRole) {
-			session()->setFlashdata('notif_success', '<b>Successfully added menu data</b> ');
-			return redirect()->to(base_url('users'));
+			session()->setFlashdata('notif_success', '<b>Successfully Delete Role</b> ');
+			return redirect()->to(base_url('Roles'));
 		} else {
-			session()->setFlashdata('notif_error', '<b>Failed to add menu data</b> ');
-			return redirect()->to(base_url('users'));
+			session()->setFlashdata('notif_error', '<b>Failed to Delete Role</b> ');
+			return redirect()->to(base_url('Roles'));
 		}
 	}
 	public function createUser()

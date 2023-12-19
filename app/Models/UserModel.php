@@ -31,11 +31,13 @@ class UserModel extends Model
 	public function getAccessMenuCategory($role)
 	{
 		return $this->db->table('user_menu_category')
-			->select('*,user_menu_category.id AS menuCategoryID')
+			->select('*, user_menu_category.id AS menuCategoryID')
 			->join('user_access', 'user_menu_category.id = user_access.menu_category_id')
 			->where(['user_access.role_id' => $role])
+			->orderBy('user_menu_category.arrange', 'ASC') // Replace 'your_order_field' with the actual field name
 			->get()->getResultArray();
 	}
+
 	public function getAccessMenu($role)
 	{
 		return $this->db->table('user_menu')
@@ -63,24 +65,41 @@ class UserModel extends Model
 			'username' 		=> $dataUser['inputUsername'],
 			'password' 		=> password_hash($dataUser['inputPassword'], PASSWORD_DEFAULT),
 			'role' 			=> $dataUser['inputRole'],
-			'created_at'    => date('Y-m-d h:i:s')
+			'create_at'    => date('Y-m-d h:i:s')
 		]);
 	}
 	public function updateUser($dataUser)
 	{
+		// Check if a new password is provided
 		if ($dataUser['inputPassword']) {
 			$password = password_hash($dataUser['inputPassword'], PASSWORD_DEFAULT);
 		} else {
-			// $user 		= $this->getUser(userID: $dataUser['userID']);
-			// $password 	= $user['password'];
+			// If no new password is provided, do not update the password
+			$password = null;
 		}
-		return $this->db->table('users')->update([
-			'fullname'		=> $dataUser['inputFullname'],
-			'username' 		=> $dataUser['inputUsername'],
-			'password' 		=> $password,
-			'role' 			=> $dataUser['inputRole'],
-		], ['id' => $dataUser['userID']]);
+
+		// Build the data array for the update
+		$updateData = [
+			'fullname' => $dataUser['inputFullname'],
+			'username' => $dataUser['inputUsername'],
+			'role' => $dataUser['inputRole'],
+			'update_at' => date('Y-m-d h:i:s'),
+		];
+
+		// Only update the password if a new one is provided
+		if ($password !== null) {
+			$updateData['password'] = $password;
+		}
+
+		// Perform the database update
+		try {
+			return $this->db->table('users')->update($updateData, ['id' => $dataUser['userID']]);
+		} catch (\Exception $e) {
+			// Log the error or handle it in an appropriate way
+			return false;
+		}
 	}
+
 	public function deleteUser($userID)
 	{
 		return $this->db->table('users')->delete(['id' => $userID]);
