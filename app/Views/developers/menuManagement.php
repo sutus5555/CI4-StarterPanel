@@ -15,7 +15,7 @@
 					<button class="nav-link" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab" aria-controls="menu" aria-selected="false">Menu</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="submenu-tab" data-bs-toggle="tab" data-bs-target="#submenu" type="button" role="tab" aria-controls="submenu" aria-selected="false">Submenu</button>
+					<button class="nav-link  <?= 'disabled' ; ?>" id="submenu-tab" data-bs-toggle="tab" data-bs-target="#submenu" type="button" role="tab" aria-controls="submenu" aria-selected="false">Submenu</button>
 				</li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
@@ -27,6 +27,8 @@
 									<thead>
 										<th>#</th>
 										<th>Menu Categories</th>
+										<th>Action</th>
+										<th>Delete</th>
 									</thead>
 									<tbody>
 										<?php
@@ -36,6 +38,22 @@
 											<tr>
 												<td><?= $no++; ?></td>
 												<td><?= $menuCategories['menu_category']; ?></td>
+												<td>
+													<button class="btn btn-info btn-sm btnEditCat" data-bs-toggle="modal" data-bs-target="#formCatModal" data-id="<?= $menuCategories['id']; ?>" data-catName="<?= $menuCategories['menu_category']; ?>">Update</button>
+												</td>
+												<td>
+													<?php if (!$menuModel->getMenusByCategory($menuCategories['id'])) : ?>
+
+														<form action="<?= base_url('menuManagement/deleteCat/' . $menuCategories['id']); ?>" method="post" class="d-inline">
+															<input type="hidden" name="_method" value="DELETE">
+															<button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure delete <?= $menuCategories['menu_category']; ?> ?')">Delete</button>
+														</form>
+
+													<?php else : ?>
+														<!-- Display some message or handle accordingly when access_role_id is not null -->
+														<span class="text-muted">in use</span>
+													<?php endif; ?>
+												</td>
 											</tr>
 										<?php endforeach; ?>
 									</tbody>
@@ -71,6 +89,8 @@
 										<th>Menu Icon</th>
 										<th>Menu Title</th>
 										<th>Menu Url</th>
+										<th>Action</th>
+										<th>Delete</th>
 									</thead>
 									<tbody>
 										<?php
@@ -83,6 +103,22 @@
 												<td> <i class="align-middle" data-feather="<?= $menu['icon']; ?>"></i> </td>
 												<td><?= $menu['title']; ?></td>
 												<td><?= $menu['url']; ?></td>
+												<td>
+													<button class="btn btn-info btn-sm btnEditRole" data-bs-toggle="modal" data-bs-target="#formRoleModal" data-id="<?= $menu['menu_id']; ?>" data-name="<?= $menu['title']; ?>" data-catid="<?= $menu['menu_category_id']; ?>">Update</button>
+
+
+												</td>
+												<td>
+													<?php if ($menu['access_menu_id'] === null) : ?>
+														<form action="<?= base_url('menuManagement/deleteMenu/' . $menu['menu_id']); ?>" method="post" class="d-inline">
+															<input type="hidden" name="_method" value="DELETE">
+															<button class="btn btn-danger btn-sm">Delete</button>
+														</form>
+													<?php else : ?>
+														<!-- Display some message or handle accordingly when access_role_id is not null -->
+														<span class="text-muted">in use</span>
+													<?php endif; ?>
+												</td>
 											</tr>
 										<?php endforeach; ?>
 									</tbody>
@@ -194,7 +230,7 @@
 									</div>
 									<div class="mb-3">
 										<label for="inputSubmenuURL" class="form-label">Submenu URL</label>
-										<input type="text" class="form-control <?= ($validation->hasError('inputSubmenuURL')) ? 'is-invalid' : ''; ?>" autofocus value="<?= old('inputSubmenuURL'); ?>"" id=" inputSubmenuURL" name="inputSubmenuURL">
+										<input type="text" class="form-control <?= ($validation->hasError('inputSubmenuURL')) ? 'is-invalid' : ''; ?>" autofocus value="<?= old('inputSubmenuURL'); ?>" id=" inputSubmenuURL" name="inputSubmenuURL">
 										<div class="invalid-feedback">
 											<?= $validation->getError('inputSubmenuURL'); ?>
 										</div>
@@ -211,4 +247,126 @@
 		</div>
 	</div>
 </div>
+<!-- modal -->
+<div class="modal fade" id="formRoleModal" tabindex="-1" aria-labelledby="formUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="formUserModalLabel">Update Menu</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form action="<?= base_url('xxx/xxx'); ?> " method="post">
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="editMenuName" class="form-label">Edit Menu Name</label>
+						<input type="text" class="form-control" name="editMenuName" id="editMenuName" required>
+					</div>
+					<div class="mb-3">
+						<label for="editMenuCategory" class="form-label">Select Main Menu Category</label>
+						<select class="form-select" name="editMenuCategory" id="editMenuCategory" required>
+							<option value="">-- Select a Category --</option>
+							<?php if (!empty($MenuCategories)) : ?>
+								<?php foreach ($MenuCategories as $menuCategory) : ?>
+									<?php
+									$selected = ($menuCategory['id'] == $menuCategory['menu_category']) ? 'selected' : '';
+									?>
+									<option value="<?= $menuCategory['id'] ?>" <?= $selected ?>><?= $menuCategory['menu_category'] ?></option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save menu</button>
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- CAT modal -->
+<div class="modal fade" id="formCatModal" tabindex="-1" aria-labelledby="formUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="formUserModalLabel">Update Cat</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<form action="<?= base_url('xxx/xxx'); ?> " method="post">
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="editCat" class="form-label">Edit Cat Name</label>
+						<input type="text" class="form-control" name="editCatName" id="editCatName" required>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save Cat</button>
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$(document).ready(function() {
+		$('.btnEditRole').click(function() {
+			var menuId = this.getAttribute('data-id');
+			var menuCategory = this.getAttribute('data-catid');
+			var menuName = this.getAttribute('data-name');
+
+			// Populate the modal fields with data
+			$('#editMenuName').val(menuName);
+			$('#editMenuCategory').val(menuCategory);
+
+			// Set the form action URL with the menuId if needed
+			var formAction = '<?= base_url('menuManagement/updateMenu'); ?>/' + menuId;
+			$('#formRoleModal form').attr('action', formAction);
+
+			// Show the modal
+			$('#formRoleModal').modal('show');
+
+		});
+		$('.btnEditCat').click(function() {
+			var catId = this.getAttribute('data-id');
+			var catName = this.getAttribute('data-catName');
+			console.log('catId:', catId);
+			console.log('catName:', catName);
+
+			// Populate the modal fields with data
+			$('#editCatName').val(catName);
+
+			// Set the form action URL with the menuId if needed
+			var formAction = '<?= base_url('menuManagement/updateCat'); ?>/' + catId;
+			$('#formCatModal form').attr('action', formAction);
+
+			// Show the modal
+			$('#formCatModal').modal('show');
+
+		});
+
+	});
+
+	function confirmDelete(id) {
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'You won\'t be able to revert this!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'No, cancel',
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// User confirmed, perform the delete action
+				window.location.href = '<?= base_url('menuManagement/deleteCat/'); ?>' + id;
+			} else {
+				// User canceled the operation
+				// You can add additional logic here if needed
+			}
+		});
+	}
+</script>
+
+
 <?= $this->endSection(); ?>

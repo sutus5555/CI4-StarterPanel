@@ -40,25 +40,40 @@ $routes->get('register', 'Welcome::register');
 $routes->post('register', 'Welcome::registration');
 $routes->get('home', 'Home::index');
 
-// Setting Routes
+// Role Routes
 $routes->get('users/userRoleAccess', 'Users::userRoleAccess');
 $routes->post('users/createRole', 'Users::createRole');
 $routes->post('users/updateRole', 'Users::updateRole');
 $routes->delete('users/deleteRole', 'Users::deleteRole');
+
+// user route 
 $routes->post('users/createUser', 'Users::createUser');
 $routes->post('users/updateUser', 'Users::updateUser');
 $routes->delete('users/deleteUser', 'Users::deleteUser');
+
+// permission route 
 $routes->post('users/changeMenuPermission', 'Users::changeMenuPermission');
 $routes->post('users/changeMenuCategoryPermission', 'Users::changeMenuCategoryPermission');
 $routes->post('users/changeSubMenuPermission', 'Users::changeSubMenuPermission');
 
+// Category route 
 $routes->post('menuManagement/createMenuCategory', 'Developers\MenuManagement::createMenuCategory');
+$routes->post('menuManagement/updateCat/(:segment)', 'developers\MenuManagement::updateCat/$1');
+$routes->delete('menuManagement/deleteCat/(:segment)', 'Developers\MenuManagement::deleteCat/$1');
+
+// Menu route 
 $routes->post('menuManagement/createMenu', 'Developers\MenuManagement::createMenu');
+$routes->post('menuManagement/updateMenu/(:segment)', 'developers\MenuManagement::updateMenu/$1');
+$routes->delete('menuManagement/deleteMenu/(:segment)', 'Developers\MenuManagement::deleteMenu/$1');
+
+// submenu route 
 $routes->post('menuManagement/createSubMenu', 'Developers\MenuManagement::createSubMenu');
 
-//Developer Routes
+// Developer Routes
 $routes->get('menuManagement', 'Developers\MenuManagement::index');
-$routes->get('crudGenerator', 'Developers\CRUDGenerator::index');
+$routes->post('crudGenerator', 'Developers\CRUDGenerator::index');
+
+
 
 /*
  * --------------------------------------------------------------------

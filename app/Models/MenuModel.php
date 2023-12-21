@@ -16,7 +16,7 @@ class MenuModel extends Model
         return $this->db->table('user_menu_category')
             ->get()->getResultArray();
     }
-    public function getMenu($menuID = false)
+    public function getMenu1($menuID = false)
     {
         if ($menuID) {
             return $this->db->table('user_menu')
@@ -43,6 +43,46 @@ class MenuModel extends Model
             ->get()->getResultArray();
     }
 
+    public function getMenusByCategory($categoryId)
+    {
+        return $this->db->table('user_menu')
+            ->where('menu_category', $categoryId)
+            ->get()
+            ->getResultArray();
+    }
+
+    public function getMenu($menuID = false)
+    {
+        if ($menuID) {
+            return $this->db->table('user_menu')
+                ->select(
+                    '*,
+                user_menu_category.menu_category AS category,
+                user_menu.menu_category AS menu_category_id, 
+                user_menu.id AS menu_id,
+                user_access.menu_id AS access_menu_id'
+                )
+                ->join('user_menu_category', 'user_menu.menu_category = user_menu_category.id')
+                ->join('user_access', 'user_access.menu_id = user_menu.id', 'left') // Left join to include associated user access
+                ->where(['user_menu.id' => $menuID])
+                ->groupBy('user_menu.id') // Group by user_menu.id
+                ->get()->getRowArray();
+        }
+        return $this->db->table('user_menu')
+            ->select(
+                '*,
+            user_menu_category.menu_category AS category,
+            user_menu.menu_category AS menu_category_id, 
+            user_menu.id AS menu_id,
+            user_access.menu_id AS access_menu_id'
+            )
+            ->join('user_menu_category', 'user_menu.menu_category = user_menu_category.id')
+            ->join('user_access', 'user_access.menu_id = user_menu.id', 'left') // Left join to include associated user access
+            ->groupBy('user_menu.id') // Group by user_menu.id
+            ->get()->getResultArray();
+    }
+
+
     public function getSubmenu()
     {
         return $this->db->table('user_submenu')
@@ -65,12 +105,28 @@ class MenuModel extends Model
             'menu_category'        => $dataMenuCategory['inputMenuCategory']
         ]);
     }
-    public function updateMenuCategory($menuCategoryID)
+
+    public function updateMenuCategory($catID, $data)
     {
-        return $this->db->table('user_menu_category')->update([
-            'menu_category'        => $menuCategoryID['inputMenuCategory']
-        ]);
+        $catData = [
+            'menu_category' => $data['editCatName'],
+            'update_at' => date('Y-m-d H:i:s'),
+            // ... other fields
+        ];
+
+        $updateResult = $this->db->table('user_menu_category')
+            ->where('id', $catID)
+            ->update($catData);
+
+        return $updateResult;
     }
+
+    public function deleteCat($id)
+    {
+        $builder = $this->db->table('user_menu_category');
+        return $builder->delete(['id' => $id]);
+    }
+
     public function createMenu($dataMenu)
     {
         return $this->db->table('user_menu')->insert([
@@ -81,6 +137,29 @@ class MenuModel extends Model
             'parent'            => 0
         ]);
     }
+    public function updateMenu($menuID, $data)
+    {
+        $menuData = [
+            'title' => $data['editMenuName'],
+            'menu_category' => $data['editMenuCategory'],
+            'update_at' => date('Y-m-d H:i:s'),
+            // ... other fields
+        ];
+
+        $updateResult = $this->db->table('user_menu')
+            ->where('id', $menuID)
+            ->update($menuData);
+
+        return $updateResult;
+    }
+
+
+    public function deleteMenu($id)
+    {
+        $builder = $this->db->table('user_menu');
+        return $builder->delete(['id' => $id]);
+    }
+
 
     public function createSubMenu($dataSubmenu)
     {

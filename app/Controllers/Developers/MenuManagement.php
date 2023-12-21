@@ -3,18 +3,26 @@
 namespace App\Controllers\Developers;
 
 use App\Controllers\BaseController;
+use App\Models\MenuModel;
 
 class MenuManagement extends BaseController
 {
-
+	protected $menuModel;
+	function __construct()
+	{
+		$this->menuModel  	= new MenuModel();
+	}
 	public function index()
 	{
+		// Load the model
+		$menuModel = new \App\Models\MenuModel(); // Adjust the namespace and class name accordingly
 		$data = array_merge($this->data, [
 			'title'         => 'Menu Management',
 			'MenuCategories'	=> $this->menuModel->getMenuCategory(),
 			'Menus'				=> $this->menuModel->getMenu(),
 			'Submenus'			=> $this->menuModel->getSubmenu(),
-			'validation'		=> $this->validation
+			'validation'		=> $this->validation,
+			'menuModel'       => $menuModel, // Pass the model to the view
 		]);
 		return view('developers/menuManagement', $data);
 	}
@@ -41,28 +49,55 @@ class MenuManagement extends BaseController
 			return redirect()->to(base_url('menuManagement'));
 		}
 	}
-	public function updateMenuCategory()
+	public function updateCat($id)
 	{
+		$updatedata = $this->request->getPost();
 		if (!$this->validate([
-			'inputMenuCategory' => [
-				'rules'     => 'required|is_unique[user_menu_category.menu_category]',
-				'errors'    => [
+			'editCatName' => [
+				'rules'  => 'required|is_unique[user_menu_category.menu_category]',
+				'errors' => [
 					'required'  => 'Menu Category must be required.',
-					'is_unique' => 'Menu Category cannot be same'
+					'is_unique' => 'Menu Category cannot be the same.'
 				]
 			]
 		])) {
+			session()->setFlashdata('notif_error', '<b>Validation Error:</b> ' . implode(' ', $this->validator->getErrors()));
 			return redirect()->to('menuManagement')->withInput();
 		}
-		$updateMenuCategory = $this->menuModel->updateMenuCategory($this->request->getPost(null));
+
+		$updateMenuCategory = $this->menuModel->updateMenuCategory($id, $updatedata);
+
 		if ($updateMenuCategory) {
-			session()->setFlashdata('notif_success', '<b>Successfully update Menu Category </b> ');
-			return redirect()->to(base_url('menuManagement'));
+			session()->setFlashdata('notif_success', '<b>Successfully updated Menu Category</b>');
 		} else {
-			session()->setFlashdata('notif_error', '<b>Failed to update Menu Category </b> ');
-			return redirect()->to(base_url('menuManagement'));
+			session()->setFlashdata('notif_error', '<b>Failed to update Menu Category</b>');
 		}
+
+		return redirect('menuManagement');
 	}
+
+
+	public function deleteCat($id)
+	{
+		$menuCat = 1;
+
+		if ($menuCat) {
+			// Check if there are any associated user_menu records
+			$associatedMenus = $this->menuModel->getMenusByCategory($id);
+
+			if (empty($associatedMenus)) {
+				$this->menuModel->deleteCat($id);
+				session()->setFlashdata('notif_success', 'MenuCat deleted successfully.');
+			} else {
+				session()->setFlashdata('notif_error', 'Cannot delete MenuCat with associated user_menu records.');
+			}
+		} else {
+			session()->setFlashdata('notif_error', 'MenuCat not found.');
+		}
+
+		return redirect()->to(base_url('menuManagement'));
+	}
+
 
 	public function createMenu()
 	{
@@ -119,6 +154,57 @@ class MenuManagement extends BaseController
 			return redirect()->to(base_url('menuManagement'));
 		}
 	}
+	public function updateMenu($id)
+	{
+		echo "Controller method called with ID: $id";
+		// exit;
+		$updatedata = $this->request->getPost();
+
+		$validationRules = [
+			'editMenuName' => "required|is_unique[user_menu.title,id,$id]",
+			// Add other validation rules for the remaining fields
+		];
+
+
+		if (!$this->validate($validationRules)) {
+			session()->setFlashdata('notif_error', '<b>Failed to update menu: </b>' . implode(' ', $this->validator->getErrors()));
+			return redirect()->to(base_url('menuManagement#menu'));
+		}
+
+		$updateResult = $this->menuModel->updateMenu($id, $updatedata);
+
+		if ($updateResult) {
+			session()->setFlashdata('notif_success', '<b>Successfully updated menu</b>');
+		} else {
+			session()->setFlashdata('notif_error', '<b>Failed to update menu</b>');
+		}
+
+		return redirect()->to(base_url('menuManagement#menu'));
+	}
+
+	public function deleteMenu($id)
+	{
+		echo "Controller method called with ID: $id";
+		// exit;
+		$menu = $this->menuModel->getMenu($id);
+
+		if ($menu) {
+			// Check if access_menu_id is null before allowing deletion
+			if ($menu['access_menu_id'] === null) {
+				$this->menuModel->deleteMenu($id);
+				session()->setFlashdata('notif_success', 'Menu deleted successfully.');
+			} else {
+				session()->setFlashdata('notif_error', 'Cannot delete menu with assigned access roles.');
+			}
+		} else {
+			session()->setFlashdata('notif_error', 'Menu not found.');
+		}
+
+		return redirect()->to(base_url('menuManagement'));
+	}
+
+
+
 	public function createSubMenu()
 	{
 		if (!$this->validate([
