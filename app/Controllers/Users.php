@@ -88,6 +88,8 @@ class Users extends BaseController
 	}
 	public function updateUser()
 	{
+	
+
 		$updateUser = $this->userModel->updateUser($this->request->getPost(null, FILTER_UNSAFE_RAW));
 		if ($updateUser) {
 			session()->setFlashdata('notif_success', '<b>Successfully update user data</b> ');
@@ -95,6 +97,27 @@ class Users extends BaseController
 		} else {
 			session()->setFlashdata('notif_error', '<b>Failed to update user data</b> ');
 			return redirect()->to(base_url('users'));
+		}
+	}
+	public function updateUser2()
+	{
+		// Get all POST data
+		$postData = $this->request->getPost(null, FILTER_UNSAFE_RAW);
+
+		// Debugging: Display all POST data
+		echo '<pre>';
+		var_dump($postData);
+		echo '</pre>';
+
+		// exit;
+
+		$updateUser = $this->userModel->updateUser2($this->request->getPost(null, FILTER_UNSAFE_RAW));
+		if ($updateUser) {
+			session()->setFlashdata('notif_success', '<b>Successfully update user data</b> ');
+			return redirect()->to(base_url('/home'));
+		} else {	
+			session()->setFlashdata('notif_error', '<b>Failed to update user data</b> ');
+			return redirect()->to(base_url('/home'));
 		}
 	}
 	public function deleteUser($userID)

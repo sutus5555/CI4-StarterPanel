@@ -79,6 +79,62 @@
 	</div>
 	<!-- Include the DataTables initialization script -->
 	<?= $this->include('script/datatables_init'); ?>
+
+	<!-- Edit Profile Modal -->
+	<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editLabel">Edit Profile</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form action="<?= base_url('users/updateUser2'); ?>" method="post" id="editForm">
+					
+
+						<div class="mb-3">
+							<label for="inputFullname" class="form-label">Fullname</label>
+							<input type="text" class="form-control" name="inputFullname" id="inputFullname" value="<?= session()->get('fullname'); ?>" required>
+						</div>
+
+						<div class="mb-3">
+							<label for="inputUsername" class="form-label">Username</label>
+							<input type="text" class="form-control" name="inputUsername" id="inputUsername" value="<?= session()->get('username'); ?>" required readonly>
+						</div>
+						<div class="mb-3">
+							<label for="inputPassword" class="col-form-label">Password:</label>
+							<input type="password" class="form-control" name="inputPassword" id="inputPassword">
+						</div>
+						<!-- Add other form fields for editing profile information -->
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save changes</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 
+	<script>
+		function openEditProfileModal(event) {
+			var userId = $(event.target).data('user-id');
+			var fullname = $(event.target).data('fullname');
+			var username = $(event.target).data('username');
+
+			// Set user information in the modal
+			$('#userId').val(userId);
+			$('#editFullname').val(fullname);
+			$('#editUsername').val(username);
+
+			// Show the modal
+			$('#editProfileModal').modal('show');
+		}
+	</script> -->
+
 </body>
+
 
 </html>

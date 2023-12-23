@@ -76,4 +76,11 @@
         });
 
     });
+
+  
+    function openProfileModal() {
+        // Code to show/handle the modal
+        $('#editProfileModal').modal('show');
+    }
+
 </script>

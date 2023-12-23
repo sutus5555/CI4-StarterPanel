@@ -68,6 +68,38 @@ class UserModel extends Model
 			'create_at'    => date('Y-m-d h:i:s')
 		]);
 	}
+	public function updateUser2($dataUser) //session check
+	{
+		// Check if a new password is provided and has a length greater than 0
+		if (!empty($dataUser['inputPassword'])) {
+			$password = password_hash($dataUser['inputPassword'], PASSWORD_DEFAULT);
+		} else {
+			// If no new password is provided, do not update the password
+			$password = null;
+		}
+
+		// Initialize $updateData here
+		$updateData = [
+			'fullname' => $dataUser['inputFullname'],
+			'username' => session()->get('username'),
+			'role' => session()->get('role'),
+			'update_at' => date('Y-m-d h:i:s'),
+		];
+
+		// Only update the password if a new one is provided
+		if ($password !== null) {
+			$updateData['password'] = $password;
+		}
+
+		// Perform the database update
+		$id = session()->get('userID');
+		try {
+			return $this->db->table('users')->update($updateData, ['id' => $id]);
+		} catch (\Exception $e) {
+			// Log the error or handle it in an appropriate way
+			return false;
+		}
+	}
 	public function updateUser($dataUser)
 	{
 		// Check if a new password is provided
